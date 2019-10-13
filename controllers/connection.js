@@ -5,7 +5,6 @@ exports.getConnections = async (req, res, next) => {
   params.append('from', req.query.from);
   params.append('to', req.query.to);
 
-  console.log(1);
   const connectionsResponse = await axios.get('http://transport.opendata.ch/v1/connections', {params});
   const response = {};
   response.to = connectionsResponse.data.to;
@@ -29,21 +28,12 @@ exports.getConnections = async (req, res, next) => {
               "name": visitedStation.station.name,
               "departure": visitedStation.departure
             }
-          })
+          }),
+          "walk": section.walk && section.walk.duration? section.walk.duration : null,
+          "type": section.journey? section.journey.category : 'walk'
         }
       })
     }
   });
-
-  console.log(response);
-  console.log(2);
-
- 
-
-  res.status(200).json({
-    message: response,
-    posts: [],
-    totalItems: 0
-  });
-
+  res.status(200).json(response);
 };
