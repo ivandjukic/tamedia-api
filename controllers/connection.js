@@ -4,6 +4,9 @@ exports.getConnections = async (req, res, next) => {
   const params = new URLSearchParams();
   params.append('from', req.query.from);
   params.append('to', req.query.to);
+  params.append('time', req.query.arrivalTime);
+  params.append('isArrivalTime', 1);
+  params.append('limit', req.query.numberOfConnections);
 
   const connectionsResponse = await axios.get('http://transport.opendata.ch/v1/connections', {params});
   const response = {};
